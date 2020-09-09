@@ -27,6 +27,68 @@
 
 ## 2.本地easymock
 
+- 注: 只有linux系统和mac可以实现
+
+1. 安装docker 
+
+   https://docs.docker.com/docker-for-windows/install/
+
+2. 拉取镜像
+
+   商店: https://hub.docker.com/search?q=&type=image 
+
+   > docker pull easymock/easymock
+
+3. 配置
+
+   参考:  https://hub.docker.com/r/easymock/easymock
+
+   1.  新建文件 `docker-compose.yml` 内容如下:
+
+      ```js
+      version: '3'
+      
+      services:
+        mongodb:
+          image: mongo:3.4.1
+          volumes:
+            # ./data/db 数据库文件存放地址，根据需要修改为本地地址
+            - './data/db:/data/db'
+          networks:
+            - easy-mock
+          restart: always
+      
+        redis:
+          image: redis:4.0.6
+          command: redis-server --appendonly yes
+          volumes:
+            # ./data/redis redis 数据文件存放地址，根据需要修改为本地地址
+            - './data/redis:/data'
+          networks:
+            - easy-mock
+          restart: always
+      
+        web:
+          image: easymock/easymock:1.6.0
+          command: /bin/bash -c "npm start"
+          ports:
+            - 7300:7300
+          volumes:
+            # 日志地址，根据需要修改为本地地址
+            - './logs:/home/easy-mock/easy-mock/logs'
+            # 配置地址，请使用本地配置地址替换
+            # - './production.json:/home/easy-mock/easy-mock/config/production.json'
+          networks:
+            - easy-mock
+          restart: always
+      
+      networks:
+        easy-mock:
+      ```
+
+      2. 启动：`docker-compose up -d`
+      3. 访问 localhost:7300
+
 ## 3.本地mock的使用
 
 ### 3.1前端直接使用mockjs模块造假数据
