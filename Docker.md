@@ -1,6 +1,8 @@
-参考:   https://yeasy.gitbook.io/docker_practice/introduction/what
+- 云服务器安装docker(参考:https://cloud.tencent.com/developer/article/1701451)
 
 # 1.docker简介
+
+参考:   https://yeasy.gitbook.io/docker_practice/introduction/what
 
 docker仓库类似npm仓库，存放各种依赖包. 镜像类似于vue-cli脚手架，通过脚手架也就是镜像可以创建N多个vue项目也就是容器，docker仓库、镜像和容器关系如下图
 

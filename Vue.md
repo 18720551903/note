@@ -432,3 +432,17 @@ render: function (createElement) {
   }
 }
 ```
+
+```js
+const arr1 = [];
+const arr2 = [];
+const d = arr2[arr1[0] = 1];
+console.log(d, arr1[0] = 1); //4   2
+
+const obj = {};
+const arr = [];
+const c = arr[obj.a = 1]; 
+console.log(c, obj.a = 1) //2   1 
+
+```
+

@@ -25,25 +25,29 @@
 
    ![](./pic/5.jpg)
 
-## 2.本地easymock
+## 2.本地easymock(配合docker)
 
 - 注: 只有linux系统和mac可以实现
 
 1. 安装docker 
 
-   https://docs.docker.com/docker-for-windows/install/
+   - 本地安装: https://docs.docker.com/docker-for-windows/install/
 
-2. 拉取镜像
+   - 云服务器安装: https://cloud.tencent.com/developer/article/1701451
 
-   商店: https://hub.docker.com/search?q=&type=image 
+2. 安装docker-compose
 
-   > docker pull easymock/easymock
+   https://docs.docker.com/compose/install/
+
+   ![](./pic\docker-mock.png)
 
 3. 配置
 
    参考:  https://hub.docker.com/r/easymock/easymock
 
-   1.  新建文件 `docker-compose.yml` 内容如下:
+   1. 新建文件 `docker-compose.yml` (放在根目录下)内容如下:
+
+      > docker-compose安装参考:https://docs.docker.com/compose/install/
 
       ```js
       version: '3'
@@ -70,7 +74,7 @@
       
         web:
           image: easymock/easymock:1.6.0
-          command: /bin/bash -c "npm start"
+          command: /bin/bash -c "npm run dev"
           ports:
             - 7300:7300
           volumes:
@@ -87,7 +91,19 @@
       ```
 
       2. 启动：`docker-compose up -d`
-      3. 访问 localhost:7300
+      
+      3. 配置nginx(首页加载时间超时处理)
+      
+             server {
+             listen 7200;
+             server_name localhost;
+             ssl_session_timeout 150m; #尽量长一点 服务器带宽小
+             location / {
+               	    proxy_pass http://111.229.255.19:7300;          
+             }
+             }
+      
+      4. 访问 localhost:7200
 
 ## 3.本地mock的使用
 
@@ -144,7 +160,7 @@
    VUE_APP_MOCK= true
    
    // mian.js中
-   process.env.VUE_APP_MOCK && require('./mock/index.js');
+   process.env.VUE_APP_MOCK && JSON.parse(process.env.VUE_APP_MOCK)  && require('./mock/index.js');
    ```
 
 3. 创建文件
